@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@supabase/supabase-js'
-import QRCode from 'qrcode'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -12,7 +11,6 @@ const supabase = createClient(
 
 export default function AssetsPage() {
   const [assets, setAssets] = useState<any[]>([])
-  const [qrCodes, setQrCodes] = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetchAssets()
@@ -29,43 +27,23 @@ export default function AssetsPage() {
       return
     }
 
-    const list = data || []
-
-    setAssets(list)
-
-    const qrMap: Record<string, string> = {}
-
-    for (const asset of list) {
-      try {
-        const qr = await QRCode.toDataURL(
-          `${window.location.origin}/assets/${asset.id}`
-        )
-
-        qrMap[asset.id] = qr
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    setQrCodes(qrMap)
+    setAssets(data || [])
   }
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">
-        비품 목록
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">
+          비품 목록
+        </h1>
 
-      <div className="mb-4">
-        QR 개수 : {Object.keys(qrCodes).length}
+        <Link
+          href="/assets/new"
+          className="bg-black text-white px-5 py-3 rounded"
+        >
+          비품 등록
+        </Link>
       </div>
-
-      <Link
-        href="/assets/new"
-        className="inline-block bg-black text-white px-5 py-3 rounded mb-6"
-      >
-        비품 등록
-      </Link>
 
       <div className="grid gap-4">
         {assets.map((asset) => (
@@ -112,15 +90,11 @@ export default function AssetsPage() {
             </Link>
 
             <div className="mt-4">
-              {qrCodes[asset.id] ? (
-                <img
-                  src={qrCodes[asset.id]}
-                  alt="QR Code"
-                  className="w-32 h-32 border"
-                />
-              ) : (
-                <div>QR 생성중...</div>
-              )}
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://asset-management-ixvm.vercel.app/assets/${asset.id}`}
+                alt="QR"
+                className="w-32 h-32 border"
+              />
             </div>
           </div>
         ))}
