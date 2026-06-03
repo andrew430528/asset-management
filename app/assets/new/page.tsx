@@ -200,34 +200,26 @@ return ( <div className="p-8 max-w-xl mx-auto"> <h1 className="text-3xl font-bol
       )
     : ''}
 </div>
-      <option value="">부서 선택</option>
+      </select>
 
-      <option value="01">(01)총무부</option>
-      <option value="02">(02)행정서무부</option>
-      <option value="03">(03)내무부</option>
-      <option value="04">(04)기획부</option>
-      <option value="05">(05)재정부</option>
-      <option value="06">(06)교육부</option>
-      <option value="07">(07)신학부</option>
-      <option value="08">(08)외교정책선교부</option>
-      <option value="09">(09)전도부</option>
-      <option value="10">(10)문화부</option>
-      <option value="11">(11)출판부</option>
-      <option value="12">(12)정보통신부</option>
-      <option value="13">(13)찬양부</option>
-      <option value="14">(14)섭외부</option>
-      <option value="15">(15)국내선교부</option>
-      <option value="16">(16)홍보부</option>
-      <option value="17">(17)법무부</option>
-      <option value="18">(18)감사부</option>
-      <option value="19">(19)건설부</option>
-      <option value="20">(20)체육부</option>
-      <option value="21">(21)사업부</option>
-      <option value="22">(22)보건후생복지부</option>
-      <option value="23">(23)봉사교통부</option>
-      <option value="24">(24)신문고부</option>
-      <option value="29">(29)국제부</option>
-    </select>
+<div className="border p-3 rounded bg-gray-100">
+  부서 :
+  {' '}
+  {typeof window !== 'undefined'
+    ? localStorage.getItem(
+        'departmentName'
+      )
+    : ''}
+</div>
+
+<input
+  className="border p-3 w-full rounded"
+  placeholder="부서코드2"
+  value={department2}
+  onChange={(e) =>
+    setDepartment2(e.target.value)
+  }
+/>
 
     <input
       className="border p-3 w-full rounded"
