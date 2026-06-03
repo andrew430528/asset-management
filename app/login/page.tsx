@@ -24,8 +24,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     console.log(
-  'URL:',
-  process.env.NEXT_PUBLIC_SUPABASE_URL
+  'KEY FULL:',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
 console.log(
