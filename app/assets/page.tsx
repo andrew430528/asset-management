@@ -121,7 +121,12 @@ const [departmentName, setDepartmentName] =
           >
             목록형
           </button>
-
+<Link
+  href="/settings"
+  className="bg-blue-600 text-white px-5 py-3 rounded"
+>
+  비밀번호 변경
+</Link>
           <Link
             href="/assets/new"
             className="bg-black text-white px-5 py-3 rounded"
