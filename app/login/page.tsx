@@ -32,7 +32,15 @@ console.log(
   'KEY:',
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.slice(0,20)
 )
-    loadDepartments()
+    loadDepartments()console.log(
+  'URL:',
+  process.env.NEXT_PUBLIC_SUPABASE_URL
+)
+
+console.log(
+  'KEY exists:',
+  !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
   }, [])
 
   async function loadDepartments() {
