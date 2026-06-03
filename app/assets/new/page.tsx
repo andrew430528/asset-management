@@ -200,15 +200,13 @@ return ( <div className="p-8 max-w-xl mx-auto"> <h1 className="text-3xl font-bol
       )
     : ''}
 </div>
-      </select>
+     </select>
 
 <div className="border p-3 rounded bg-gray-100">
   부서 :
   {' '}
   {typeof window !== 'undefined'
-    ? localStorage.getItem(
-        'departmentName'
-      )
+    ? localStorage.getItem('departmentName')
     : ''}
 </div>
 
@@ -220,15 +218,6 @@ return ( <div className="p-8 max-w-xl mx-auto"> <h1 className="text-3xl font-bol
     setDepartment2(e.target.value)
   }
 />
-
-    <input
-      className="border p-3 w-full rounded"
-      placeholder="부서코드2"
-      value={department2}
-      onChange={(e) =>
-        setDepartment2(e.target.value)
-      }
-    />
 
     <div className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded p-3">
       <div className="font-bold mb-1">
