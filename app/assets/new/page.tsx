@@ -200,7 +200,7 @@ return ( <div className="p-8 max-w-xl mx-auto"> <h1 className="text-3xl font-bol
       )
     : ''}
 </div>
-     </select>
+  
 
 <div className="border p-3 rounded bg-gray-100">
   부서 :
