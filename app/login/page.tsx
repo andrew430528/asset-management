@@ -21,18 +21,21 @@ export default function LoginPage() {
   }, [])
 
   async function loadDepartments() {
-    const { data, error } = await supabase
-      .from('departments')
-      .select('*')
-      .order('name')
+  const { data, error } = await supabase
+    .from('departments')
+    .select('*')
+    .order('name')
 
-    if (error) {
-      console.error(error)
-      return
-    }
+  console.log('data:', data)
+  console.log('error:', error)
 
-    setDepartments(data || [])
+  if (error) {
+    alert(error.message)
+    return
   }
+
+  setDepartments(data || [])
+}
 
   async function login() {
     const { data, error } = await supabase
