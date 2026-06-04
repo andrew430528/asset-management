@@ -142,10 +142,23 @@ async function uploadCsv() {
 
   const { error } = await supabase
     .from('assets')
-    .insert(assets)
+    .upsert(
+  assets,
+  {
+    onConflict: 'asset_number'
+  }
+)
 
   console.log('ASSETS=', assets)
   console.log('ERROR=', error)
+  console.log(
+  'ASSET COUNT=',
+  assets.length
+)
+console.log(
+  'LAST ASSET=',
+  assets[assets.length - 1]
+)
 
   if (error) {
     alert(
