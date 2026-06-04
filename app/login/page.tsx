@@ -16,9 +16,16 @@ export default function LoginPage() {
   const [departmentCode, setDepartmentCode] = useState('')
   const [password, setPassword] = useState('')
 
-  useEffect(() => {
-  console.log('URL=', supabaseUrl)
-  console.log('KEY=', supabaseKey)
+ useEffect(() => {
+  console.log(
+    'URL=',
+    process.env.NEXT_PUBLIC_SUPABASE_URL
+  )
+
+  console.log(
+    'KEY=',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
 
   loadDepartments()
 }, [])
