@@ -23,9 +23,9 @@ export default function LoginPage() {
   )
 
   console.log(
-    'KEY=',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  )
+  'REAL KEY',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 console.log(
   'DEPLOY TEST 2026-06-04',
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length
