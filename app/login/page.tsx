@@ -26,10 +26,7 @@ export default function LoginPage() {
     'KEY=',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   )
-console.log(
-  'KEY LENGTH=',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length
-)
+
   loadDepartments()
 }, [])
 
@@ -73,8 +70,8 @@ console.log(
   return (
     <div className="max-w-md mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">
-  테스트12345
-</h1>
+        비품관리 로그인
+      </h1>
 
       <select
         className="border p-3 w-full rounded mb-4"
