@@ -87,9 +87,10 @@ async function uploadCsv() {
   value = value.replace(/\./g, '-')
 }
 
-        if (header === 'created_at') {
-          return
-        }
+        if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    item[header] = null
+    return
+  }
 
         if (
   header === 'purchase_price' ||
