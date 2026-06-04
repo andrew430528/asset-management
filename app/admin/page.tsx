@@ -63,53 +63,73 @@ async function uploadCsv() {
     .map(h => h.trim())
 
   const assets = rows
-    .slice(1)
-    .map(row => {
-      const values = row.split(',')
+  .slice(1)
+  .map(row => {
+    const values = row.split(',')
 
-      const item: any = {}
+    const item: any = {}
 
-      headers.forEach((header, index) => {
-        let value =
-          values[index]?.trim()
+    headers.forEach((header, index) => {
+      let value = values[index]?.trim() || ''
 
-        if (header === 'acquisition_date') {
-  if (
-    !value ||
-    value === '000' ||
-    value === '0000' ||
-    value === '0'
-  ) {
-    item[header] = null
-    return
-  }
+      // created_at은 무시
+      if (header === 'created_at') {
+        return
+      }
 
-  value = value.replace(/\./g, '-')
-}
-
-        if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    item[header] = null
-    return
-  }
-
+      // 날짜 처리
+      if (header === 'acquisition_date') {
         if (
-  header === 'purchase_price' ||
-  header === 'quantity'
-) {
-  item[header] =
-    value === ''
-      ? null
-      : Number(value)
-} else {
-  item[header] =
-    value === ''
-      ? null
-      : value
-}
-      })
+          !value ||
+          value === '0' ||
+          value === '000' ||
+          value === '0000'
+        ) {
+          item[header] = null
+          return
+        }
 
-      return item
+        value = value.replace(/\./g, '-')
+
+        // YYYY-MM-DD 형식 아니면 null
+        if (
+          !/^\d{4}-\d{2}-\d{2}$/.test(value)
+        ) {
+          console.log(
+            '잘못된 날짜:',
+            value
+          )
+
+          item[header] = null
+          return
+        }
+
+        item[header] = value
+        return
+      }
+
+      // 숫자 처리
+      if (
+        header === 'purchase_price' ||
+        header === 'quantity'
+      ) {
+        item[header] =
+          value === ''
+            ? null
+            : Number(value)
+
+        return
+      }
+
+      // 일반 문자 처리
+      item[header] =
+        value === ''
+          ? null
+          : value
     })
+
+    return item
+  })
 
   console.log(
     'FIRST ASSET=',
@@ -122,7 +142,7 @@ async function uploadCsv() {
 
   const { error } = await supabase
     .from('assets')
-    .insert(assets)
+    .insert([assets[0]])
 
   console.log('ASSETS=', assets)
   console.log('ERROR=', error)
