@@ -17,18 +17,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
 
   useEffect(() => {
-    console.log(
-      'URL:',
-      process.env.NEXT_PUBLIC_SUPABASE_URL
-    )
+  console.log('URL=', supabaseUrl)
+  console.log('KEY=', supabaseKey)
 
-    console.log(
-      'KEY FULL:',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    )
-
-    loadDepartments()
-  }, [])
+  loadDepartments()
+}, [])
 
   async function loadDepartments() {
     const { data, error } = await supabase
