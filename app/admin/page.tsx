@@ -84,7 +84,11 @@ async function uploadCsv() {
           return
         }
 
-        item[header] = value
+        if (value === '') {
+  item[header] = null
+} else {
+  item[header] = value
+}
       })
 
       return item
