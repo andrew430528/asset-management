@@ -10,6 +10,10 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 console.log('TOP URL=', supabaseUrl)
 console.log('TOP KEY=', supabaseKey)
 console.log('TOP LEN=', supabaseKey.length)
+console.log(
+  'TOP KEY JSON=',
+  JSON.stringify(supabaseKey)
+)
 
 const supabase = createClient(
   supabaseUrl,
