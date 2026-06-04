@@ -73,21 +73,37 @@ async function uploadCsv() {
         let value =
           values[index]?.trim()
 
-        if (
-          header === 'acquisition_date' &&
-          value
-        ) {
-          value = value.replace(/\./g, '-')
-        }
+        if (header === 'acquisition_date') {
+  if (
+    !value ||
+    value === '000' ||
+    value === '0000' ||
+    value === '0'
+  ) {
+    item[header] = null
+    return
+  }
+
+  value = value.replace(/\./g, '-')
+}
 
         if (header === 'created_at') {
           return
         }
 
-        if (value === '') {
-  item[header] = null
+        if (
+  header === 'purchase_price' ||
+  header === 'quantity'
+) {
+  item[header] =
+    value === ''
+      ? null
+      : Number(value)
 } else {
-  item[header] = value
+  item[header] =
+    value === ''
+      ? null
+      : value
 }
       })
 
