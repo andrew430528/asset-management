@@ -70,12 +70,22 @@ async function uploadCsv() {
       const item: any = {}
 
       headers.forEach((header, index) => {
-        item[header] =
-          values[index]?.trim()
-      })
+  let value =
+    values[index]?.trim()
 
-      return item
-    })
+  if (
+    header === 'acquisition_date' &&
+    value
+  ) {
+    value = value.replace(/\./g, '-')
+  }
+
+  if (header === 'created_at') {
+    return
+  }
+
+  item[header] = value
+})
 
   const { error } = await supabase
     .from('assets')
