@@ -26,7 +26,10 @@ export default function LoginPage() {
     'KEY=',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   )
-
+console.log(
+  'KEY LENGTH=',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length
+)
   loadDepartments()
 }, [])
 
