@@ -70,29 +70,50 @@ async function uploadCsv() {
       const item: any = {}
 
       headers.forEach((header, index) => {
-  let value =
-    values[index]?.trim()
+        let value =
+          values[index]?.trim()
 
-  if (
-    header === 'acquisition_date' &&
-    value
-  ) {
-    value = value.replace(/\./g, '-')
-  }
+        if (
+          header === 'acquisition_date' &&
+          value
+        ) {
+          value = value.replace(/\./g, '-')
+        }
 
-  if (header === 'created_at') {
-    return
-  }
+        if (header === 'created_at') {
+          return
+        }
 
-  item[header] = value
-})
+        item[header] = value
+      })
+
+      return item
+    })
+
+  console.log(
+    'FIRST ASSET=',
+    JSON.stringify(
+      assets[0],
+      null,
+      2
+    )
+  )
 
   const { error } = await supabase
     .from('assets')
     .insert(assets)
 
+  console.log('ASSETS=', assets)
+  console.log('ERROR=', error)
+
   if (error) {
-    alert(error.message)
+    alert(
+      JSON.stringify(
+        error,
+        null,
+        2
+      )
+    )
     return
   }
 
@@ -100,6 +121,7 @@ async function uploadCsv() {
     `${assets.length}건 등록 완료`
   )
 }
+
   return (
     <div className="max-w-xl mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">
