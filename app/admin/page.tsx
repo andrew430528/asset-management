@@ -13,6 +13,8 @@ export default function AdminPage() {
   const [code, setCode] = useState('')
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
+  const [csvFile, setCsvFile] =
+  useState<File | null>(null)
 
   async function createDepartment() {
     if (!name || !code || !userId || !password) {
@@ -43,7 +45,51 @@ export default function AdminPage() {
     setUserId('')
     setPassword('')
   }
+async function uploadCsv() {
+  if (!csvFile) {
+    alert('CSV 파일을 선택하세요.')
+    return
+  }
 
+  const text = await csvFile.text()
+
+  const rows = text
+    .split('\n')
+    .map(row => row.trim())
+    .filter(Boolean)
+
+  const headers = rows[0]
+    .split(',')
+    .map(h => h.trim())
+
+  const assets = rows
+    .slice(1)
+    .map(row => {
+      const values = row.split(',')
+
+      const item: any = {}
+
+      headers.forEach((header, index) => {
+        item[header] =
+          values[index]?.trim()
+      })
+
+      return item
+    })
+
+  const { error } = await supabase
+    .from('assets')
+    .insert(assets)
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  alert(
+    `${assets.length}건 등록 완료`
+  )
+}
   return (
     <div className="max-w-xl mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">
@@ -95,6 +141,29 @@ export default function AdminPage() {
   className="bg-black text-white px-5 py-3 rounded w-full"
 >
   부서 생성
+</button>
+<hr className="my-8" />
+
+<h2 className="text-xl font-bold mb-3">
+  CSV 업로드
+</h2>
+
+<input
+  type="file"
+  accept=".csv"
+  onChange={(e) =>
+    setCsvFile(
+      e.target.files?.[0] || null
+    )
+  }
+  className="mb-3 block"
+/>
+
+<button
+  onClick={uploadCsv}
+  className="bg-blue-600 text-white px-5 py-3 rounded w-full"
+>
+  CSV 업로드
 </button>
     </div>
   )
