@@ -142,7 +142,7 @@ async function uploadCsv() {
 
   const { error } = await supabase
     .from('assets')
-    .insert([assets[0]])
+    .insert(assets)
 
   console.log('ASSETS=', assets)
   console.log('ERROR=', error)
