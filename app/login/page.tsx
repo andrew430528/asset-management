@@ -4,118 +4,105 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl =
-process.env.NEXT_PUBLIC_SUPABASE_URL
-
-const supabaseKey =
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
 console.log('TOP URL=', supabaseUrl)
 console.log('TOP KEY=', supabaseKey)
-console.log('TOP LEN=', supabaseKey?.length)
+console.log('TOP LEN=', supabaseKey.length)
 
 const supabase = createClient(
-supabaseUrl || '',
-supabaseKey || ''
+  supabaseUrl,
+  supabaseKey
 )
 
 export default function LoginPage() {
-const router = useRouter()
+  const router = useRouter()
 
-const [departments, setDepartments] = useState<any[]>([])
-const [departmentCode, setDepartmentCode] = useState('')
-const [password, setPassword] = useState('')
+  const [departments, setDepartments] = useState<any[]>([])
+  const [departmentCode, setDepartmentCode] = useState('')
+  const [password, setPassword] = useState('')
 
-useEffect(() => {
-loadDepartments()
-}, [])
+  useEffect(() => {
+    loadDepartments()
+  }, [])
 
-async function loadDepartments() {
-const { data, error } = await supabase
-.from('departments')
-.select('*')
-.order('name')
+  async function loadDepartments() {
+    const { data, error } = await supabase
+      .from('departments')
+      .select('*')
+      .order('name')
 
+    console.log('data:', data)
+    console.log('error:', error)
 
-console.log('data:', data)
-console.log('error:', error)
-
-if (error) {
-  alert(error.message)
-  return
-}
-
-setDepartments(data || [])
-
-
-}
-
-async function login() {
-const { data, error } = await supabase
-.from('departments')
-.select('*')
-.eq('code', departmentCode)
-.eq('password', password)
-.single()
-
-
-if (error || !data) {
-  alert('비밀번호가 올바르지 않습니다.')
-  return
-}
-
-localStorage.setItem('department', data.code)
-localStorage.setItem('departmentName', data.name)
-localStorage.setItem('userId', data.user_id || '')
-
-router.push('/assets')
-
-
-}
-
-return ( <div className="max-w-md mx-auto p-8"> <h1 className="text-3xl font-bold mb-6">
-비품관리 로그인 </h1>
-
-
-  <select
-    className="border p-3 w-full rounded mb-4"
-    value={departmentCode}
-    onChange={(e) =>
-      setDepartmentCode(e.target.value)
+    if (!error) {
+      setDepartments(data || [])
     }
-  >
-    <option value="">
-      부서 선택
-    </option>
+  }
 
-    {departments.map((dept) => (
-      <option
-        key={dept.id}
-        value={dept.code}
+  async function login() {
+    const { data, error } = await supabase
+      .from('departments')
+      .select('*')
+      .eq('code', departmentCode)
+      .eq('password', password)
+      .single()
+
+    if (error || !data) {
+      alert('비밀번호가 올바르지 않습니다.')
+      return
+    }
+
+    localStorage.setItem('department', data.code)
+    localStorage.setItem('departmentName', data.name)
+
+    router.push('/assets')
+  }
+
+  return (
+    <div className="max-w-md mx-auto p-8">
+      <h1 className="text-3xl font-bold mb-6">
+        비품관리 로그인
+      </h1>
+
+      <select
+        className="border p-3 w-full rounded mb-4"
+        value={departmentCode}
+        onChange={(e) =>
+          setDepartmentCode(e.target.value)
+        }
       >
-        {dept.name}
-      </option>
-    ))}
-  </select>
+        <option value="">
+          부서 선택
+        </option>
 
-  <input
-    type="password"
-    className="border p-3 w-full rounded mb-4"
-    placeholder="비밀번호"
-    value={password}
-    onChange={(e) =>
-      setPassword(e.target.value)
-    }
-  />
+        {departments.map((dept) => (
+          <option
+            key={dept.id}
+            value={dept.code}
+          >
+            {dept.name}
+          </option>
+        ))}
+      </select>
 
-  <button
-    onClick={login}
-    className="bg-black text-white px-5 py-3 rounded w-full"
-  >
-    로그인
-  </button>
-</div>
+      <input
+        type="password"
+        className="border p-3 w-full rounded mb-4"
+        placeholder="비밀번호"
+        value={password}
+        onChange={(e) =>
+          setPassword(e.target.value)
+        }
+      />
 
-
-)
+      <button
+        onClick={login}
+        className="bg-black text-white px-5 py-3 rounded w-full"
+      >
+        로그인
+      </button>
+    </div>
+  )
 }
