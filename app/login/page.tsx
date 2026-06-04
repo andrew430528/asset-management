@@ -70,8 +70,8 @@ export default function LoginPage() {
   return (
     <div className="max-w-md mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">
-        비품관리 로그인
-      </h1>
+  테스트12345
+</h1>
 
       <select
         className="border p-3 w-full rounded mb-4"
